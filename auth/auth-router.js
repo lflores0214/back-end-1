@@ -1,16 +1,12 @@
 const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const Users = require("../users/users-model");
-
-
+const Users = require("../Users/users-model");
 
 router.post("/register", (req, res) => {
   const user = req.body;
   const hash = bcrypt.hashSync(user.password, 14);
-
   user.password = hash;
-
   Users.add(user)
     .then(saved => {
       res.status(201).json(saved);
@@ -23,13 +19,11 @@ router.post("/register", (req, res) => {
 
 router.post("/login", (req, res) => {
   const { username, password } = req.body;
-
   Users.findBy({ username })
     .first()
     .then(user => {
       if (user && bcrypt.compareSync(password, user.password)) {
         const token = signToken(user);
-
         res.status(200).json({
           token,
           message: `welcome ${user.username}!`
@@ -51,7 +45,6 @@ function signToken(user) {
     id: user.id
   };
   const secret = process.env.JWT_SECRET || "Secret Squirrel";
-
   options = {
     expiresIn: "4h"
   };
