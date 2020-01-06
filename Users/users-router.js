@@ -1,62 +1,59 @@
-const db = require("../database/dbConfig.js");
+const router = require("express").Router();
 
-module.exports = {
-  add,
-  find,
-  findBy,
-  findById,
-  findEntries,
-  addEntry,
-  findEnt,
-};
+const Users = require("../users/users-model");
 
-function find() {
-  return db("users");
-}
+router.get("/:id/journal", (req, res) => {
+  Users.findEntries()
+    .then(entries => {
+      res.status(200).json(entries);
+    })
+    .catch(error => {
+      console.log(error);
+      res.status(500).json({
+        errorMessage: "error retrieving recipes"
+      });
+    });
+});
 
-function findBy(filter) {
-  return db("users").where(filter);
-}
+router.post("/:id/journal", (req, res) => {
+  req.body.user_id = req.params.user_id;
+  const body = req.body;
+  Users.addEntry(body)
+    .then(entry => {
+      res.status(201).json(entry);
+    })
+    .catch(error => {
+      console.log(error);
+      res.status(500).json({
+        errorMessage: "error saving entry"
+      });
+    });
+});
 
-async function add(user) {
-  const [id] = await db("users").insert(user);
+router.get("/journals", (req, res) => {
+  Users.findEntries()
+    .then(user => {
+      res.status(200).json(user);
+    })
+    .catch(error => {
+      console.log(error);
+      res.status(500).json({
+        errorMessage: "problem retrieving entries"
+      });
+    });
+});
 
-  return findById(id);
-}
+router.get("/", (req,res) => {
+    Users.find()
+    .then(users => {
+        res.status(200).json(users)
+    })
+    .catch(error => {
+        console.log(error);
+        res.status(500).json({
+            errorMessage: "error retrieving users"
+        })
+    })
+})
 
-function findById(id) {
-  return db("users")
-    .where({ id })
-    .first();
-}
-function findEntries(){
-  return db("workouts");
-}
-
-function findEntryById(id) {
-  return db("workouts")
-    .where({ id })
-    .first();
-}
-
-
-function findEnt(id) {
-  return db("workouts")
-    .join("users", "users.id", "workout.user_id")
-    .select(
-      "workouts.id",
-      "users.id",
-      "workouts.workout",
-      "workouts.weight",
-      "workouts.reps",
-      "workouts.notes",
-      "workouts.timestamp"
-    )
-    .orderBy("workouts.timestamp")
-    .where("users.id", id);
-}
-async function addEntry(entry) {
-  const [id] = await db("workouts").insert(entry);
-
-  return findEntryById(id);
-}
+module.exports = router;
