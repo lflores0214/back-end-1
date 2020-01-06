@@ -10,7 +10,7 @@ exports.up = function(knex) {
         users.string("email", 128)
         .notNullable
 
-        users.string("password", 24)
+        users.string("password")
         .notNullable()
 
     })
