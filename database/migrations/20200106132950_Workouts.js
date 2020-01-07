@@ -17,6 +17,8 @@ exports.up = function(knex) {
         
         tbl.string("body_region")
         .notNullable()
+
+        tbl.integer("sets")
   
         tbl.integer("weight")
         
