@@ -42,7 +42,7 @@ router.get("/journals", (req, res) => {
       });
     });
 });
-router.put("/:id/journal", (req, res) => {
+router.put("/:id/entry", (req, res) => {
   const { id } = req.params;
   const changes = req.body;
 
@@ -65,7 +65,7 @@ router.put("/:id/journal", (req, res) => {
     });
 });
 
-router.delete('/:id/journal', (req,res)=> {
+router.delete('/:id/entry', (req,res)=> {
   const { id } = req.params;
 
   Users.remove(id)
