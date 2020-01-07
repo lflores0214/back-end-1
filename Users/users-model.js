@@ -56,7 +56,7 @@ function findEnt(id) {
     .where("users.id", id);
 }
 async function addEntry(entry) {
-  const [id] = await db("workouts").insert(entry);
+  const [id] = await db("workouts").insert(entry, "id");
 
   return findEntryById(id);
 }
