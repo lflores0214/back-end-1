@@ -31,8 +31,7 @@ Base URL: `https://weightliftingjournal1.herokuapp.com/api`
 | `POST`         | `/auth/register`     | creates a user                                      |
 | `POST`         | `/users/:id/journal` | adds a journal entry for a given user               |
 | `GET`          | `/users`             | returns all users                                   |
-| `GET`          | `/users/journal`     | returns all journal entries for a users             |
+| `GET`          | `/users/journals`    | returns all journal entries for all users           |
+| `GET`          | `/users/:id/journal` | returns all journal entries for a user              |
 | `PUT`          | `/users/:id/entry`   | updates a journal entry. :id refers to the entry id |
 | `Delete`       | `/users/:id/entry`   | deletes a journal entry :id refers to the entry id  |
-
-

@@ -1,8 +1,8 @@
 const router = require("express").Router();
-
+const restricted = require("../auth/restricted")
 const Users = require("../Users/users-model");
 
-router.get("/:id/journal", (req, res) => {
+router.get("/:id/journal", restricted, (req, res) => {
   Users.findEntries()
     .then(entries => {
       res.status(200).json(entries);
@@ -10,12 +10,12 @@ router.get("/:id/journal", (req, res) => {
     .catch(error => {
       console.log(error);
       res.status(500).json({
-        errorMessage: "error retrieving recipes"
+        errorMessage: "error retrieving entry"
       });
     });
 });
 
-router.post("/:id/journal", (req, res) => {
+router.post("/:id/journal",restricted, (req, res) => {
   req.body.user_id = req.params.id;
   const body = req.body;
   Users.addEntry(body)
@@ -42,7 +42,7 @@ router.get("/journals", (req, res) => {
       });
     });
 });
-router.put("/:id/entry", (req, res) => {
+router.put("/:id/entry",restricted, (req, res) => {
   const { id } = req.params;
   const changes = req.body;
 
@@ -65,7 +65,7 @@ router.put("/:id/entry", (req, res) => {
     });
 });
 
-router.delete('/:id/entry', (req,res)=> {
+router.delete('/:id/entry',restricted, (req,res)=> {
   const { id } = req.params;
 
   Users.remove(id)
