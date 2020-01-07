@@ -22,7 +22,7 @@ exports.up = function(knex) {
         
         tbl.integer("reps")
         
-        tbl.timestamp("created")
+        tbl.timestamp('created_at').defaultTo(knex.fn.now())
         
         tbl.string("notes",256)
   
