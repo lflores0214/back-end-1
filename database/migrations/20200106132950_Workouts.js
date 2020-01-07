@@ -20,7 +20,7 @@ exports.up = function(knex) {
 
         tbl.integer("sets")
   
-        tbl.integer("weight")
+        tbl.string("weight")
         
         tbl.integer("reps")
         

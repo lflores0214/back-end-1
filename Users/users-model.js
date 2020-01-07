@@ -75,3 +75,6 @@ function remove(id) {
   .where("id", id)
   .del();
 }
+async function addUserInfo(id){
+  return db("user_info")
+}
