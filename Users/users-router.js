@@ -16,7 +16,7 @@ router.get("/:id/journal", (req, res) => {
 });
 
 router.post("/:id/journal", (req, res) => {
-  req.body.user_id = req.params.user_id;
+  req.body.user_id = req.params.id;
   const body = req.body;
   Users.addEntry(body)
     .then(entry => {

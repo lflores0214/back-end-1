@@ -4,13 +4,17 @@ exports.up = function(knex) {
         tbl.increments()
   
         tbl.integer("user_id")
-        .unsigned()
         .notNullable()
+        .unsigned()
         .references('id')
-        .inTable("users");
+        .inTable("users")
+        .onDelete("CASCADE")
+        .onUpdate("CASCADE");
+        
       
         tbl.string("workout", 128)
         .notNullable()
+        
         tbl.string("body_region")
         .notNullable()
   
