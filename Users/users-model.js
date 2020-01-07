@@ -5,9 +5,12 @@ module.exports = {
   find,
   findBy,
   findById,
+  findEntryById,
   findEntries,
   addEntry,
   findEnt,
+  update,
+  remove
 };
 
 function find() {
@@ -59,4 +62,16 @@ async function addEntry(entry) {
   const [id] = await db("workouts").insert(entry, "id");
 
   return findEntryById(id);
+}
+
+async function update(changes, id) {
+  return db("workouts")
+  .where({ id })
+  .update(changes, "id")
+}
+
+function remove(id) {
+  return db("workouts")
+  .where("id", id)
+  .del();
 }

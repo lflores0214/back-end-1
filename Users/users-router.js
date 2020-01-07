@@ -42,18 +42,61 @@ router.get("/journals", (req, res) => {
       });
     });
 });
+router.put("/:id/journal", (req, res) => {
+  const { id } = req.params;
+  const changes = req.body;
 
-router.get("/", (req,res) => {
-    Users.find()
-    .then(users => {
-        res.status(200).json(users)
+  Users.findEntryById(id)
+    .then(entry => {
+      if (entry) {
+        Users.update(changes, id).then(updatedEntry => {
+          res.json(updatedEntry);
+        });
+      } else {
+        res.status(404).json({
+          message: `could not find entry #${id}`
+        });
+      }
     })
     .catch(error => {
-        console.log(error);
-        res.status(500).json({
-            errorMessage: "error retrieving users"
-        })
+      res.status(500).json({
+        errorMessage: "Failed to update entry"
+      });
+    });
+});
+
+router.delete('/:id/journal', (req,res)=> {
+  const { id } = req.params;
+
+  Users.remove(id)
+  .then(deleted => {
+    if (deleted) {
+      res.json({
+        removed: deleted
+      })
+    } else {
+      res.status(404).json({
+        message: `Could not find entry#${id}`
+      })
+    }
+  })
+  .catch(error => {
+    res.status(500).json({
+      errorMessage: "Failed to delete entry"
     })
+  })
 })
+router.get("/", (req, res) => {
+  Users.find()
+    .then(users => {
+      res.status(200).json(users);
+    })
+    .catch(error => {
+      console.log(error);
+      res.status(500).json({
+        errorMessage: "error retrieving users"
+      });
+    });
+});
 
 module.exports = router;
