@@ -23,6 +23,12 @@ router.post("/:id/info", restricted, (req,res)=> {
   .then(info => {
     res.status(201).json(info)
   })
+  .catch(error => {
+    console.log(error);
+    res.status(500).json({
+      errorMessage: "error posting info"
+    })
+  })
 })
 
 router.get("/", (req, res) => {

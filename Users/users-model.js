@@ -101,6 +101,7 @@ function findInfo(id){
   .select(
     "user_info.id",
     "user_info.user_id",
+    "users.username",
     "user_info.user_age",
     "user_info.user_height",
     "user_info.user_weight"
