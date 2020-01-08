@@ -57,6 +57,7 @@ function findEnt(id) {
       "workouts.workout",
       "workouts.body_region",
       "workouts.weight",
+      "workouts.sets",
       "workouts.reps",
       "workouts.notes",
       "workouts.created_at"
