@@ -14,6 +14,8 @@ module.exports = {
   addUserInfo,
   findUsersInfo,
   findInfo,
+  editInfo,
+  findInfoById
 };
 
 function find() {
@@ -72,6 +74,11 @@ async function update(changes, id) {
   .where({ id })
   .update(changes, "id")
 }
+async function editInfo(changes, id){
+  return db("user_info")
+  .where({id})
+  .update(changes, "id")
+}
 
 function remove(id) {
   return db("workouts")
@@ -82,6 +89,7 @@ async function addUserInfo(info){
   const [id] = await db("user_info").insert(info, "id");
 
 }
+
 function findUsersInfo(){
   return db("user_info")
 }
@@ -97,4 +105,10 @@ function findInfo(id){
   )
   .orderBy("users.id")
   .where("users.id", id);
+}
+
+function findInfoById(id){
+  return db("user_info")
+  .where({ id })
+  .first()
 }
