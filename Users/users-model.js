@@ -88,6 +88,8 @@ function remove(id) {
 async function addUserInfo(info){
   const [id] = await db("user_info").insert(info, "id");
 
+  return findInfoById(id)
+
 }
 
 function findUsersInfo(){
