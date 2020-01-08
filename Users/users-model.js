@@ -55,6 +55,7 @@ function findEnt(id) {
       "workouts.id",
       "workouts.user_id",
       "workouts.workout",
+      "workouts.body_region",
       "workouts.weight",
       "workouts.reps",
       "workouts.notes",
