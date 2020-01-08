@@ -2,8 +2,44 @@ const router = require("express").Router();
 const restricted = require("../auth/restricted")
 const Users = require("../Users/users-model");
 
+router.post("/:id/info", restricted, (req,res)=> {
+  req.body.user_id = req.params.id
+  const body = req.body
+  Users.addUserInfo(body)
+  .then(info => {
+    res.status(201).json(info)
+  })
+})
+router.get("/:id/info", restricted, (req,res)=> {
+  req.body.user_id = req.params.id
+  const id = req.body.user_id
+  Users.findInfo(id)
+  .then(info => {
+    res.status(200).json(info)
+  })
+  .catch(error => {
+    console.log(error);
+    res.status(500).json({
+      errorMessage: "error retrieving information"
+    })
+  })
+})
+router.get("/usersinfo", (req,res) => {
+  Users.findUsersInfo()
+  .then(users => {
+    res.status(200).json(users)
+  })
+  .catch(error => {
+    console.log(error);
+    res.status(500).json({
+      errorMessage: "error returning user info"
+    })
+  })
+})
 router.get("/:id/journal", restricted, (req, res) => {
-  Users.findEntries()
+  req.body.user_id = req.params.id
+  const id = req.body.user_id
+  Users.findEnt(id)
     .then(entries => {
       res.status(200).json(entries);
     })
@@ -14,7 +50,6 @@ router.get("/:id/journal", restricted, (req, res) => {
       });
     });
 });
-
 router.post("/:id/journal",restricted, (req, res) => {
   req.body.user_id = req.params.id;
   const body = req.body;

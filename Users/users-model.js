@@ -10,7 +10,10 @@ module.exports = {
   addEntry,
   findEnt,
   update,
-  remove
+  remove,
+  addUserInfo,
+  findUsersInfo,
+  findInfo,
 };
 
 function find() {
@@ -45,17 +48,17 @@ function findEntryById(id) {
 
 function findEnt(id) {
   return db("workouts")
-    .join("users", "users.id", "workout.user_id")
+    .join("users", "users.id","workouts.user_id")
     .select(
       "workouts.id",
-      "users.id",
+      "workouts.user_id",
       "workouts.workout",
       "workouts.weight",
       "workouts.reps",
       "workouts.notes",
-      "workouts.timestamp"
+      "workouts.created_at"
     )
-    .orderBy("workouts.timestamp")
+    .orderBy("workouts.created_at")
     .where("users.id", id);
 }
 async function addEntry(entry) {
@@ -75,6 +78,23 @@ function remove(id) {
   .where("id", id)
   .del();
 }
-async function addUserInfo(id){
+async function addUserInfo(info){
+  const [id] = await db("user_info").insert(info, "id");
+
+}
+function findUsersInfo(){
   return db("user_info")
+}
+function findInfo(id){
+  return db("user_info")
+  .join("users", "users.id","user_info.user_id")
+  .select(
+    "user_info.id",
+    "user_info.user_id",
+    "user_info.user_age",
+    "user_info.user_height",
+    "user_info.user_weight"
+  )
+  .orderBy("users.id")
+  .where("users.id", id);
 }
