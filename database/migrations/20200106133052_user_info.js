@@ -13,7 +13,7 @@ exports.up = function(knex) {
         tbl.string("user_height", 16)
         .notNullable()
 
-        tbl.integer("user_weight")
+        tbl.string("user_weight")
         .notNullable()
 
     })
