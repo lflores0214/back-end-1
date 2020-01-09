@@ -15,7 +15,9 @@ module.exports = {
   findUsersInfo,
   findInfo,
   editInfo,
-  findInfoById
+  findInfoById,
+  deleteInfo,
+  removeUser
 };
 
 function find() {
@@ -90,6 +92,16 @@ function remove(id) {
   .where("id", id)
   .del();
 }
+function removeUser(id){
+  return db("users")
+  .where("id", id)
+  .del()
+}
+function deleteInfo(id){
+  return db("user_info")
+  .where("id", id)
+  .del()
+}
 async function addUserInfo(info){
   const [id] = await db("user_info").insert(info, "id");
 
@@ -109,7 +121,8 @@ function findInfo(id){
     "users.username",
     "user_info.user_age",
     "user_info.user_height",
-    "user_info.user_weight"
+    "user_info.user_weight",
+    "user_info.created_at"
   )
   .orderBy("users.id")
   .where("users.id", id);
