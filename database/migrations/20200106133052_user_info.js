@@ -15,6 +15,8 @@ exports.up = function(knex) {
 
         tbl.string("user_weight")
         .notNullable()
+        
+        tbl.timestamp('created_at').defaultTo(knex.fn.now())
 
     })
   
