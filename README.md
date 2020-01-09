@@ -50,3 +50,4 @@ Base URL: `https://weightliftingjournal1.herokuapp.com/api`
 | `PUT`          | `/users/:id/entry`   | updates a journal entry. :id refers to the entry id                   |
 | `PUT`          | `/users/:id/info`    | updates user information. :id refers to the info id                   |
 | `Delete`       | `/users/:id/entry`   | deletes a journal entry. :id refers to the entry id                   |
+| `Delete`       | `/users/:id/info`    | deletes a users info entry. :id refers to the info id                 |
