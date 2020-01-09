@@ -16,7 +16,8 @@ module.exports = {
   findInfo,
   editInfo,
   findInfoById,
-  deleteInfo
+  deleteInfo,
+  removeUser
 };
 
 function find() {
@@ -90,6 +91,11 @@ function remove(id) {
   return db("workouts")
   .where("id", id)
   .del();
+}
+function removeUser(id){
+  return db("users")
+  .where("id", id)
+  .del()
 }
 function deleteInfo(id){
   return db("user_info")
