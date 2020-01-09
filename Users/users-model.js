@@ -55,7 +55,9 @@ function findEnt(id) {
       "workouts.id",
       "workouts.user_id",
       "workouts.workout",
+      "workouts.body_region",
       "workouts.weight",
+      "workouts.sets",
       "workouts.reps",
       "workouts.notes",
       "workouts.created_at"
@@ -70,14 +72,17 @@ async function addEntry(entry) {
 }
 
 async function update(changes, id) {
-  return db("workouts")
+  await db("workouts")
   .where({ id })
   .update(changes, "id")
+return findEntryById(id)
+  
 }
 async function editInfo(changes, id){
-  return db("user_info")
+  await db("user_info")
   .where({id})
   .update(changes, "id")
+  return findInfoById(id)
 }
 
 function remove(id) {
@@ -87,6 +92,8 @@ function remove(id) {
 }
 async function addUserInfo(info){
   const [id] = await db("user_info").insert(info, "id");
+
+  return findInfoById(id)
 
 }
 
@@ -99,6 +106,7 @@ function findInfo(id){
   .select(
     "user_info.id",
     "user_info.user_id",
+    "users.username",
     "user_info.user_age",
     "user_info.user_height",
     "user_info.user_weight"
