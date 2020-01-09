@@ -35,24 +35,7 @@ describe("server.js", function() {
           expect(res.body.api).toBe("up");
         });
     });
-
-    // it.skip("auth example", function() {
-    //   return request(server)
-    //     .post("/api/auth/login")
-    //     .send({ username: "me", password: "pass" })
-    //     .then(res => {
-    //       const token = res.body.token;
-
-    //       return request(server)
-    //         .get("/")
-    //         .set("authorization", token)
-    //         .then(res => {
-    //             expect(res.status).toBe(200)
-    //           expect(Array.isArray(res.body)).toBe(true);
-    //         });
-    //     });
-    // });
-  })
+  });
   describe("/api/auth/register", function() {
     it("should add users to the DB", async function() {
       await User.add({
@@ -68,24 +51,26 @@ describe("server.js", function() {
 
       const users = await db("users");
       expect(users).toHaveLength(4);
-
-      
-    })
+    });
     it("auth example", function() {
-        return request(server)
-          .post("/api/auth/login")
-          .send({ username: "Luis", password: "pass" })
-          .then(res => {
-            const token = res.body.token;
-            console.log(res.body)
-            return request(server)
-              .get("/")
-              .set("authorization", token)
-              .then(res => {
-                  expect(res.status).toBe(200)
-                expect(Array.isArray(res.body)).toBe(true);
-              });
-          });
-      });
+      return request(server)
+        .post("/api/auth/register")
+        .send({ username: "leo", email: "leo", password: "pass" })
+        .then(res => {
+          return request(server)
+            .post("/api/auth/login")
+            .send({ username: "leo", password: "pass" })
+            .then(res => {
+              const token = res.body.token;
+              return request(server)
+                .get("/api/users")
+                .set("authorization", token)
+                .then(res => {
+                  expect(res.status).toBe(200);
+                  expect(Array.isArray(res.body)).toBe(true);
+                });
+            });
+        });
+    });
   });
 });
