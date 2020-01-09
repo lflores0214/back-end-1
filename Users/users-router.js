@@ -161,6 +161,27 @@ router.delete('/:id/entry',restricted, (req,res)=> {
     })
   })
 })
+router.delete('/:id/info', restricted, (req,res)=> {
+  const { id } = req.params;
+  Users.deleteInfo(id)
+  .then(deleted => {
+    if (deleted) {
+      res.json({
+        removed: deleted
+      })
+    } else {
+      res.status(404).json({
+        message: `could not find info with id of ${id}`
+      })
+    }
+  })
+  .catch(error => {
+    console.log(error);
+    res.status(500).json({
+      errorMessage: "Error deleting user info"
+    })
+  })
+})
 
 
 module.exports = router;
