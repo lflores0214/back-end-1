@@ -24,65 +24,112 @@ describe("User Model", function() {
       const users = await db("users");
       expect(users).toHaveLength(2);
     });
-    it("auth example", function() {
-      return request(server)
-        .post("/api/auth/register")
-        .send({ username: "Luke", email: "Luke@mail.com", password: "pass" })
-        .then(res => {
-          return request(server)
-            .post("/api/auth/login")
-            .send({ username: "Luke", password: "pass" })
-            .then(res => {
-              const token = res.body.token;
-              return request(server)
-                .get("/api/users")
-                .set("authorization", token)
-                .then(res => {
-                  expect(res.status).toBe(200);
-                  expect(Array.isArray(res.body)).toBe(true);
-                });
-            });
-        });
-    });
-    it("POST to journal", function() {
-      return request(server)
-        .post("/api/auth/register")
-        .send({ username: "Luke", email: "Luke@mail.com", password: "pass" })
-        .then(res => {
-          return request(server)
-            .post("/api/auth/login")
-            .send({ username: "Luke", password: "pass" })
-            .then(res => {
-              const token = res.body.token;
-              return request(server)
-                .get("/api/users")
-                .set("authorization", token)
-                .then(res => {
-                  return request(server)
-                  .post("/api/users/1/journal")
+    // Auth tests
+    describe("/api/users", function() {
+      it("auth example", function() {
+        return request(server)
+          .post("/api/auth/register")
+          .send({ username: "Luis", email: "Luis@mail.com", password: "pass" })
+          .then(res => {
+            return request(server)
+              .post("/api/auth/login")
+              .send({ username: "Luis", password: "pass" })
+              .then(res => {
+                const token = res.body.token;
+                return request(server)
+                  .get("/api/users")
                   .set("authorization", token)
-                  .send({
-                    workout: "Bench Press",
-                    body_region: "shoulders and chest",
-                    sets: 3,
-                    weight: "120 lbs",
-                    reps:10,
-                    notes:"Good workout"
-                  })
+                  .then(res => {
+                    expect(res.status).toBe(200);
+                    expect(Array.isArray(res.body)).toBe(true);
+                  });
+              });
+          });
+      });
+    });
+    // Journal Post tests
+    describe("/api/users/1/journal", function() {
+      it("POST to journal and GET journal", function() {
+        return request(server)
+          .post("/api/auth/register")
+          .send({
+            username: "Polina",
+            email: "Polina@mail.com",
+            password: "pass"
+          })
+          .then(res => {
+            return request(server)
+              .post("/api/auth/login")
+              .send({ username: "Polina", password: "pass" })
+              .then(res => {
+                const token = res.body.token;
+                return request(server)
+                  .get("/api/users")
+                  .set("authorization", token)
                   .then(res => {
                     return request(server)
-                    .get("/api/users/1/journal")
-                    .set("authorization", token)
-                    .then(res => {
-                      expect(res.status).toBe(200);
-                      expect(Array.isArray(res.body)).toBe(true);
-                    })
-                  })
-                  
-                });
-            });
-        });
-    })
-    it("")
+                      .post("/api/users/5/journal")
+                      .set("authorization", token)
+                      .send({
+                        workout: "Bench Press",
+                        body_region: "shoulders and chest",
+                        sets: 3,
+                        weight: "120 lbs",
+                        reps: 10,
+                        notes: "Good workout"
+                      })
+                      .then(res => {
+                        return request(server)
+                          .get("/api/users/5/journal")
+                          .set("authorization", token)
+                          .then(res => {
+                            expect(res.status).toBe(200);
+                            expect(Array.isArray(res.body)).toBe(true);
+                          });
+                      });
+                  });
+              });
+          });
+      });
+    });
+    //User info tests
+    describe("/api/users/1/info", function() {
+      it("POST user info and GET user info", function() {
+        return request(server)
+          .post("/api/auth/register")
+          .send({ username: "Olga", email: "Olga@mail.com", password: "pass" })
+          .then(res => {
+            return request(server)
+              .post("/api/auth/login")
+              .send({ username: "Olga", password: "pass" })
+              .then(res => {
+                const token = res.body.token;
+                return request(server)
+                  .get("/api/users")
+                  .set("authorization", token)
+                  .then(res => {
+                    return request(server)
+                      .post("/api/users/1/info")
+                      .set("authorization", token)
+                      .send({
+                        user_age: 45,
+                        user_height: "5ft 10",
+                        user_weight: "180 lbs"
+                      })
+                      .then(res => {
+                        return request(server)
+                          .get("/api/users/1/info")
+                          .set("authorization", token)
+                          .then(res => {
+                            expect(res.status).toBe(200);
+                            expect(Array.isArray(res.body)).toBe(true);
+                          });
+                      });
+                  });
+              });
+          });
+      });
+    });
+    
   });
 });
