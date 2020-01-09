@@ -72,14 +72,17 @@ async function addEntry(entry) {
 }
 
 async function update(changes, id) {
-  return db("workouts")
+  await db("workouts")
   .where({ id })
   .update(changes, "id")
+return findEntryById(id)
+  
 }
 async function editInfo(changes, id){
-  return db("user_info")
+  await db("user_info")
   .where({id})
   .update(changes, "id")
+  return findInfoById(id)
 }
 
 function remove(id) {
