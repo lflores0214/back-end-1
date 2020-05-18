@@ -51,7 +51,7 @@ router.get("/journals", (req, res) => {
     .catch(error => {
       console.log(error);
       res.status(500).json({
-        errorMessage: "problem retrieving entries"
+        errorMessage: "error retrieving entries"
       });
     });
 });
