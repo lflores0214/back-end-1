@@ -45,7 +45,7 @@ function signToken(user) {
   const payload = {
     id: user.id
   };
-  const secret = process.env.JWT_SECRET || "Secret Squirrel";
+  const secret = process.env.JWT_SECRET;
   options = {
     expiresIn: "4h"
   };
