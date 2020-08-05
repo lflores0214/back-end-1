@@ -27,6 +27,7 @@ router.post("/login", (req, res) => {
         res.status(200).json({
           token,
           id: user.id,
+          username: user.username,
           message: `Welcome ${user.username}!`
         });
       } else {
@@ -43,7 +44,7 @@ router.post("/login", (req, res) => {
 
 function signToken(user) {
   const payload = {
-    id: user.id
+    id: user.id,
   };
   const secret = process.env.JWT_SECRET;
   options = {
